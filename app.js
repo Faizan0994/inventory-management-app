@@ -13,8 +13,8 @@ app.get("/", (req, res) => {
   // the index route
   res.render("index");
 });
-app.get("/items", itemsRouter);
-app.get("/categories", categoriesRouter);
+app.use("/items", itemsRouter);
+app.use("/categories", categoriesRouter);
 
 app.listen(PORT, (error) => {
   if (error) throw error;
