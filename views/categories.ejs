@@ -11,7 +11,12 @@
     <div class="categories">
       <% categories.forEach(category => { %>
       <div class="category">
-        <h2><%= category.name %></h2>
+        <div class="cat-header">
+          <h2><%= category.name %></h2>
+          <form action="/categories/<%=category.id%>/delete" method="post">
+            <button type="submit" class="delete-cat">X</button>
+          </form>
+        </div>
         <div class="items">
           <% if(category.items.length === 0) { %>
           <p class="no-items">No items</p>
@@ -25,6 +30,9 @@
         </div>
       </div>
       <% }) %>
+      <a href="/categories/add"
+        ><button class="add-category">Add Category</button></a
+      >
     </div>
   </body>
 </html>

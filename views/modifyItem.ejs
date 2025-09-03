@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modify item</title>
+  </head>
+  <body>
+    <h1>Change Item</h1>
+    <h2>Item: <%=item.item%></h2>
+    <form action="/items/<%=item.id%>/modify" method="post">
+      <label for="category">Category:</label>
+      <select name="category" id="category">
+        <% categories.forEach(category => { %>
+        <option value="<%=category.id%>"><%= category.name %></option>
+        <% }) %>
+      </select>
+      <button type="submit">Set</button>
+    </form>
+  </body>
+</html>

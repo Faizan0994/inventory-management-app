@@ -13,12 +13,15 @@
       <div class="item">
         <p class="itemName"><%= item.item %></p>
         <div class="buttons">
-          <button>Change</button>
-          <button>Delete</button>
+          <a href="/items/<%=item.id%>/modify"><button>Change</button></a>
+          <form action="/items/<%=item.id%>/delete" method="post">
+            <button type="submit">Delete</button>
+          </form>
         </div>
         <p class="category"><%= item.cat %></p>
       </div>
       <% }); %>
     </div>
+    <a href="/items/add" class="add-button"><button>Add Item</button></a>
   </body>
 </html>
