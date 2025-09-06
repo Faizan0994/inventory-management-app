@@ -15,7 +15,7 @@ async function getAllItemsWithCategories() {
 
 async function getItemById(id) {
   const item = await pool.query("SELECT * FROM items WHERE id = $1", [id]);
-  return item.rows;
+  return item.rows[0]; // only a single row
 }
 
 async function deleteItem(id) {

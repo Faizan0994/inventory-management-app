@@ -1,26 +1,5 @@
 const { body, validationResult } = require("express-validator");
-
-// dummy data
-const items = [
-  {
-    item: "Bread",
-    cat: "food",
-    id: 1,
-    catId: 1,
-  },
-  {
-    item: "Biscuits",
-    cat: "food",
-    id: 2,
-    catId: 1,
-  },
-  {
-    item: "Pens",
-    cat: "stationery",
-    id: 5,
-    catId: 2,
-  },
-];
+const db = require("../database/queries");
 
 const validator = [
   body("name")
@@ -31,43 +10,56 @@ const validator = [
     .withMessage("item name can only contain alphabets or digits"),
 ];
 
-exports.getItems = (req, res) => {
+exports.getItems = async (req, res) => {
+  const items = await db.getAllItemsWithCategories();
   res.render("items", { items: items });
 };
 
-exports.deleteItems = (req, res) => {
-  // handle delete here
+exports.deleteItems = async (req, res) => {
+  const id = +req.params.id;
+  await db.deleteItem(id);
   res.redirect("/items");
 };
 
-exports.getModify = (req, res) => {
+exports.getModify = async (req, res) => {
+  const id = +req.params.id;
+  const item = await db.getItemById(id);
+  console.log(item);
+  const categories = await db.getAllCategories();
   res.render("modifyItem", {
-    /* item data here */
+    item: item,
+    categories: categories,
   });
 };
 
-exports.postModify = (req, res) => {
-  // handle modification here
+exports.postModify = async (req, res) => {
+  const itemId = +req.params.id;
+  const catId = req.body.category;
+  await db.changeCategory(itemId, catId);
   res.redirect("/items");
 };
 
-exports.getAdd = (req, res) => {
+exports.getAdd = async (req, res) => {
+  const categories = await db.getAllCategories();
   res.render("addItem", {
-    /* categories info here */
+    categories: categories,
   });
 };
 
 exports.postAdd = [
   validator,
-  (req, res) => {
+  async (req, res) => {
+    const categories = await db.getAllCategories();
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).render("addItem", {
         errors: errors.array(),
-        /* categories info here */
+        categories: categories,
       });
     }
-    // handle item addition here
+    const name = req.body.name;
+    const catId = +req.body.category;
+    await db.addItem(name, catId);
     res.redirect("/items");
   },
 ];

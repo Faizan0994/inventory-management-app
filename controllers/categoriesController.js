@@ -1,39 +1,5 @@
 const { body, validationResult } = require("express-validator");
-
-// dummy data
-const categories = [
-  {
-    name: "food",
-    id: 1,
-    items: [
-      {
-        item: "Bread",
-        cat: "food",
-        id: 1,
-        catId: 1,
-      },
-      {
-        item: "Biscuits",
-        cat: "food",
-        id: 2,
-        catId: 1,
-      },
-    ],
-  },
-  {
-    name: "stationery",
-    id: 2,
-    items: [
-      {
-        item: "Pens",
-        cat: "stationery",
-        id: 5,
-        catId: 2,
-      },
-    ],
-  },
-  { name: "sports", id: 3, items: [] },
-];
+const db = require("../database/queries");
 
 const validator = [
   body("name")
@@ -44,7 +10,8 @@ const validator = [
     .withMessage("item name can only contain alphabets or digits"),
 ];
 
-exports.getCategories = (req, res) => {
+exports.getCategories = async (req, res) => {
+  const categories = await db.getAllCategoriesWithItems();
   res.render("categories", { categories: categories });
 };
 
@@ -54,17 +21,19 @@ exports.getAdd = (req, res) => {
 
 exports.postAdd = [
   validator,
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).render("addCategory", { errors: errors.array() });
     }
-    // Handle category addition here
+    const name = req.body.name;
+    await db.addCategory(name);
     res.redirect("/categories");
   },
 ];
 
-exports.postDelete = (req, res) => {
-  // Handle delete here
+exports.postDelete = async (req, res) => {
+  const id = +req.params.id;
+  await db.deleteCategory(id);
   res.redirect("/categories");
 };
