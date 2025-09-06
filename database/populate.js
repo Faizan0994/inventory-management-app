@@ -26,7 +26,7 @@ INSERT INTO items (item, catId) VALUES
 async function main() {
   console.log("seeding...");
   const client = new Client({
-    connectionString: process.env.localDB,
+    connectionString: process.env.DB,
   });
   await client.connect();
   await client.query(SQL);
