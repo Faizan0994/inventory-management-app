@@ -14,7 +14,7 @@
       <label for="category">Category: </label>
       <select name="category" id="category">
         <% categories.forEach(category => {%>
-        <option value="<%=category.id%>"><%=category.name%></option>
+        <option value="<%=category.id%>"><%=category.category%></option>
         <% }) %>
       </select>
       <button type="submit">Add</button>

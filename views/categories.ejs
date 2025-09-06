@@ -12,7 +12,7 @@
       <% categories.forEach(category => { %>
       <div class="category">
         <div class="cat-header">
-          <h2><%= category.name %></h2>
+          <h2><%= category.category %></h2>
           <form action="/categories/<%=category.id%>/delete" method="post">
             <button type="submit" class="delete-cat">X</button>
           </form>
@@ -23,7 +23,7 @@
           <% } else { %>
           <div class="items">
             <% category.items.forEach(item => { %>
-            <p><%= item.item %></p>
+            <p><%= item.name %></p>
             <% }) %>
           </div>
           <% } %>
