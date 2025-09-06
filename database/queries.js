@@ -10,13 +10,11 @@ async function getAllItemsWithCategories() {
   const items = await pool.query(
     "SELECT items.id, item, catId, category FROM items JOIN categories ON items.catId = categories.id"
   );
-  console.log(items.rows);
   return items.rows;
 }
 
 async function getItemById(id) {
   const item = await pool.query("SELECT * FROM items WHERE id = $1", [id]);
-  console.log(item.rows);
   return item.rows;
 }
 
@@ -40,7 +38,6 @@ async function addItem(name, catId) {
 
 async function getAllCategories() {
   const categories = await pool.query("SELECT * FROM categories");
-  console.log(categories.rows);
   return categories.rows;
 }
 
@@ -59,7 +56,6 @@ async function getAllCategoriesWithItems() {
     GROUP BY c.id, c.category
     ORDER BY c.id;
   `);
-  console.log(categories.rows);
   return categories.rows;
 }
 
